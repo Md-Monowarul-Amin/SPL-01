@@ -50,6 +50,7 @@ window.addEventListener("keydown", (e) => {
                 var starbound = star_.getBoundingClientRect();
                 var bulletbound = bullet.getBoundingClientRect();
 
+                
                 if(
                     bulletbound.left >= starbound.left &&
                     bulletbound.right <= starbound.right &&
@@ -153,6 +154,7 @@ var generatestar  = function(){
 };
 
 generatestar();
+
 
 
 
