@@ -16,24 +16,59 @@ class Star{
 const star_1 = new Star(25, 25,22,20, "rocket.png");
 const star_2 = new Star(100, 100,50, 50, "rocket.png");
 const star_3 = new Star(350, 350,75,75, "sun.jpg");
+const star_4 = new Star(700, 700, 75, 75, "sun.jpg");
+const star_5 = new Star(200, 500, 75, 75, "rocket.png");
 star_list.push(star_1);
 star_list.push(star_2);
 star_list.push(star_3);
+star_list.push(star_4);
+star_list.push(star_5);
 
+var border_left = 0;
+var border_right = 460;
+var jet_position_left = 150;
 
 window.addEventListener("keydown", (e) => {
     var left = parseInt(window.getComputedStyle(jet).getPropertyValue("left"));
-    if (e.key == "ArrowLeft" && left > 0) {
-      jet.style.left = left - 10 + "px";
-      
+    jet_position_left = left;
+    
+    if(e.key == "ArrowLeft" && left <= border_left) {
+
+        jet.style.left = left - 10 + "px";
+        if (left > 0){
+            document.getElementById("board").style.overflow = "auto";
+            border_right -= 10;
+            border_left -= 10;
+        }
+        else{
+            document.getElementById("board").style.overflow = "hidden";
+
+        }
     }
 
+    else if (e.key == "ArrowLeft" && left > border_left) {
+        jet.style.left = left - 10 + "px";
+        document.getElementById("board").style.overflow = "hidden";
+        // border_right -= 10;
+        
+      }
+
     //460  =>  board width - jet width
-    else if (e.key == "ArrowRight" && left <= 460) {
+    else if (e.key === "ArrowRight" && left < border_right) {
+
         jet.style.left = left + 10 + "px";
+        document.getElementById("board").style.overflow = "hidden";
+
         // console.log(jet.style.right);
   }
-  if(e.key == "ArrowUp" || e.key == "Space"){
+    else if(e.key === "ArrowRight" && left >= border_right){
+        document.getElementById("board").style.overflow = "auto";
+        jet.style.left = left + 10 + "px";
+        border_right += 10;
+        border_left += 10;
+    }
+
+  if(e.key == "ArrowUp" || e.code ==  "Space") {
     var bullet = document.createElement("div");
     bullet.classList.add("bullets");
     board.appendChild(bullet);
@@ -73,6 +108,9 @@ window.addEventListener("keydown", (e) => {
 }, 1);
 
 
+window.addEventListener('scroll', ()=>{
+    console.log('scrolled');
+})
 
 var generatecoins = setInterval(function(){
     var coin_ = document.createElement("div");
@@ -82,7 +120,7 @@ var generatecoins = setInterval(function(){
     //     window.getComputedStyle(coin).getPropertyValue("left")
     //   );
 
-    coin_.style.left = Math.floor(Math.random() * 450) + "px";
+    coin_.style.left = Math.floor(Math.random() * border_right) + "px";
     board.appendChild(coin_);
 
 }, 3000);
@@ -154,8 +192,5 @@ var generatestar  = function(){
 };
 
 generatestar();
-
-
-
 
 
