@@ -2,22 +2,25 @@ var jet = document.getElementById("jet");
 var board = document.getElementById("board");
 var star_list = [];
 
+
+
 class Star{
-    constructor(top, left, width, height, image) {
+    constructor(top, left, width, height, image, velocity, moving_area) {
         this.top = top;
         this.left = left;
         this.width = width;
         this.height = width;
         this.image = image;
-        
+        this.velocity = velocity;
+        this.moving_area = moving_area + this.left;
     }
 }
 
-const star_1 = new Star(25, 25,22,20, "rocket.png");
-const star_2 = new Star(100, 100,50, 50, "rocket.png");
-const star_3 = new Star(350, 350,75,75, "sun.jpg");
-const star_4 = new Star(700, 700, 75, 75, "sun.jpg");
-const star_5 = new Star(200, 500, 75, 75, "rocket.png");
+const star_1 = new Star(25, 25,22,20, "rocket.png", 20, 500);
+const star_2 = new Star(100, 100,50, 50, "rocket.png", 20, 50);
+const star_3 = new Star(350, 350,75,75, "sun.jpg", 15, 50);
+const star_4 = new Star(700, 700, 75, 75, "sun.jpg",14, 50);
+const star_5 = new Star(200, 500, 75, 75, "rocket.png", 15, 100);
 star_list.push(star_1);
 star_list.push(star_2);
 star_list.push(star_3);
@@ -61,11 +64,15 @@ window.addEventListener("keydown", (e) => {
 
         // console.log(jet.style.right);
   }
-    else if(e.key === "ArrowRight" && left >= border_right){
+    else if(e.key === "ArrowRight" && left + 25 >= border_right){
         document.getElementById("board").style.overflow = "auto";
         jet.style.left = left + 10 + "px";
         border_right += 10;
         border_left += 10;
+        document.getElementById("board").style.left = border_left;
+        document.getElementById("board").style.right = border_right;
+        console.log("border_left"+border_left);
+        console.log(border_right);
     }
 
   if(e.key == "ArrowUp" || e.code ==  "Space") {
@@ -73,12 +80,14 @@ window.addEventListener("keydown", (e) => {
     bullet.classList.add("bullets");
     board.appendChild(bullet);
     bullet.style.left = left + "px";
-
+    let myAudio_ = document.querySelector('#bulletshoot')
+    myAudio_.play()
     var movebullet = setInterval(function(){
         var stars = document.getElementsByClassName("stars");
         var bulletbottom = parseInt(
             window.getComputedStyle(bullet).getPropertyValue("bottom")
         );
+
         for(var i = 0; i < stars.length; i++) {
             var star_ = stars[i]
             if (star_ != undefined){
@@ -187,10 +196,36 @@ var generatestar  = function(){
         star_.classList.add("stars");
         console.log(star_list[i].top, star_list[i].left, star_list[i].width, star_list[i].height);
         board.appendChild(star_);
+
     };
 
 };
 
+stars = document.getElementsByClassName("stars");
+var moving_stars = setInterval( function(){
+    for(var i=0; i< star_list.length; i++){
+        star_ = stars[i]
+        var star_left = parseInt(
+            window.getComputedStyle(star_).getPropertyValue("left")
+        );
+        console.log(star_left, star_.style.left);
+        if(star_.style.left < (star_list[i].moving_area)){
+            star_list[i].left = star_left + star_list[i].velocity + "px";
+            console.log(star_list[i].left)
+        }
+        else{
+            star_.style.left = star_left - star_.style.velocity + "px";
+        }
+    }
+
+}, 1000);
+
 generatestar();
+//moving_stars();
+
+let myAudio = document.querySelector('#audio')
+myAudio.play()
+
+
 
 
