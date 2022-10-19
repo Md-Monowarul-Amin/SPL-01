@@ -1,8 +1,4 @@
-var gamer_name = "";
-
 var start_game = function(){
-
-
 
 var jet = document.getElementById("jet");
 var board = document.getElementById("board");
@@ -107,10 +103,12 @@ window.addEventListener("keydown", (e) => {
                     bulletbound.top <= starbound.top && 
                     bulletbound.bottom <= starbound.bottom 
                 ){
-
+                    star_.parentElement.style.animationPlayState = "running";
                     star_.parentElement.removeChild(star_);
+                    bullet.remove();
                     document.getElementById("points").innerHTML =
                     parseInt(document.getElementById("points").innerHTML) + 1;
+
                 }
             }
         }
@@ -234,19 +232,15 @@ generatestar();
 
 let myAudio = document.querySelector('#audio')
 myAudio.play()
-score = document.getElementById('points').innerHTML;
-document.getElementById('end').onclick = function(){
-    alert(`${gamer_name}'s score: ${score}`)
-}
+
 
 
 }
+
 
 document.getElementById('clickMe').onclick = start_game;
 document.querySelector('form').onsubmit = function(){
     const name = document.querySelector('#name').value;
-    gamer_name = name;
     alert(`'Hello, ' ${name}! `);
     start_game();
 }
-

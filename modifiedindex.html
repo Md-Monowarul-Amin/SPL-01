@@ -7,6 +7,18 @@
     <title>Space Shooter</title>
 </head>
 <style>
+    @keyframes hide {
+        0% {
+            opacity: 1;
+            
+        }
+        100% {
+            opacity: 0;
+
+        }
+    }
+
+
     body {
         width: 100%;
         overflow: hidden;
@@ -109,6 +121,10 @@
         position: absolute;
         background-size: contain;
         background-repeat: no-repeat;
+        animation-name: hide;
+        animation-duration: 1s;
+        animation-fill-mode: forwards;
+        animation-play-state: paused;
         
     }
 
@@ -120,7 +136,7 @@
     }
             
 </style>
-<script src="newapp.js" defer></script>
+<script src="modifiednewapp.js" defer></script>
 <body>
     <div id="board">
         <div id="jet"></div>
@@ -132,7 +148,6 @@
         <input type="submit">
     </form>
     <input type="button" id="clickMe" value="Start">
-    <input type="button" id="end" value="EndGame" >
     <div id="points">0</div>
     <div id="coin_text">Coins: </div>
     <div id="coin_count">0</div>
@@ -141,4 +156,6 @@
     
 </body>
 </html>
+
+
 
