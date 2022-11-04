@@ -1,9 +1,23 @@
 var gamer_name = "";
+var final_score = 0;
 
-var start_game = function(){
+document.addEventListener('DOMContentLoaded', function(){
+
+    
+gamer_name = prompt('Type here');
+let bar = confirm('Confirm or deny');
+
+document.getElementById('clickMe').onclick = start_game;
+
+// document.getElementById('end').onclick =  alert(` ${gamer_name}'s, Score is ${final_score}`);
+
+})
 
 
 
+var  start_game = function(){
+
+document.getElementById("clickMe").disabled = true; 
 var jet = document.getElementById("jet");
 var board = document.getElementById("board");
 var star_list = [];
@@ -111,6 +125,7 @@ window.addEventListener("keydown", (e) => {
                     star_.parentElement.removeChild(star_);
                     document.getElementById("points").innerHTML =
                     parseInt(document.getElementById("points").innerHTML) + 1;
+                    final_score += 1;
                 }
             }
         }
@@ -208,24 +223,24 @@ var generatestar  = function(){
 
 };
 
-stars = document.getElementsByClassName("stars");
-var moving_stars = setInterval( function(){
-    for(var i=0; i< star_list.length; i++){
-        star_ = stars[i]
-        var star_left = parseInt(
-            window.getComputedStyle(star_).getPropertyValue("left")
-        );
-        console.log(star_left, star_.style.left);
-        if(star_.style.left < (star_list[i].moving_area)){
-            star_list[i].left = star_left + star_list[i].velocity + "px";
-            console.log(star_list[i].left)
-        }
-        else{
-            star_.style.left = star_left - star_.style.velocity + "px";
-        }
-    }
+var stars = document.getElementsByClassName("stars");
+// var moving_stars = setInterval( function(){
+//     for(var i=0; i< star_list.length; i++){
+//         star_ = stars[i]
+//         var star_left = parseInt(
+//             window.getComputedStyle(star_).getPropertyValue("left")
+//         );
+//         console.log(star_left, star_.style.left);
+//         if(star_.style.left < (star_list[i].moving_area)){
+//             star_list[i].left = star_left + star_list[i].velocity + "px";
+//             console.log(star_list[i].left)
+//         }
+//         else{
+//             star_.style.left = star_left - star_.style.velocity + "px";
+//         }
+//     }
 
-}, 1000);
+// }, 1000);
 
 generatestar();
 //moving_stars();
@@ -235,18 +250,15 @@ generatestar();
 let myAudio = document.querySelector('#audio')
 myAudio.play()
 score = document.getElementById('points').innerHTML;
-document.getElementById('end').onclick = function(){
-    alert(`${gamer_name}'s score: ${score}`)
+ document.getElementById('end').onclick = function(){
+    console.log(gamer_name);
+    alert(`${gamer_name}'s score: ${final_score}`)
+    window.location.reload();
+
 }
+// document.getElementById('end').onclick =  alert(` ${gamer_name}'s, Score is ${final_score}`);
 
 
 }
 
-document.getElementById('clickMe').onclick = start_game;
-document.querySelector('form').onsubmit = function(){
-    const name = document.querySelector('#name').value;
-    gamer_name = name;
-    alert(`'Hello, ' ${name}! `);
-    start_game();
-}
 
