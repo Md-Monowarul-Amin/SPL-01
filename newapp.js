@@ -1,9 +1,13 @@
 var gamer_name = "";
 var final_score = 0;
-
+var total_coins = 0;
+//var total_length = 455;
+const highest_length_for_bullet = 425;
+var highest_length_for_gamer = 425;
+var light_velocity = 3;
 document.addEventListener('DOMContentLoaded', function(){
 
-    
+
 gamer_name = prompt('Type here');
 let bar = confirm('Confirm or deny');
 
@@ -12,9 +16,9 @@ document.getElementById('clickMe').onclick = start_game;
 // document.getElementById('end').onclick =  alert(` ${gamer_name}'s, Score is ${final_score}`);
 
 })
-
-
-
+ 
+ 
+ 
 var  start_game = function(){
 
 document.getElementById("clickMe").disabled = true; 
@@ -35,6 +39,7 @@ class Star{
         this.moving_area = moving_area + this.left;
     }
 }
+
 
 const star_1 = new Star(25, 25,22,20, "rocket.png", 20, 500);
 const star_2 = new Star(100, 100,50, 50, "rocket.png", 20, 50);
@@ -91,12 +96,14 @@ window.addEventListener("keydown", (e) => {
         border_left += 10;
         document.getElementById("board").style.left = border_left;
         document.getElementById("board").style.right = border_right;
-        console.log("border_left"+border_left);
-        console.log(border_right);
+        // console.log("border_left"+border_left);
+        // console.log(border_right);
     }
 
   if(e.key == "ArrowUp" || e.code ==  "Space") {
     var bullet = document.createElement("div");
+    var crossed_length = 0;
+    var elapsed_time = 0
     bullet.classList.add("bullets");
     board.appendChild(bullet);
     bullet.style.left = left + "px";
@@ -107,7 +114,7 @@ window.addEventListener("keydown", (e) => {
         var bulletbottom = parseInt(
             window.getComputedStyle(bullet).getPropertyValue("bottom")
         );
-
+        
         for(var i = 0; i < stars.length; i++) {
             var star_ = stars[i]
             if (star_ != undefined){
@@ -126,21 +133,32 @@ window.addEventListener("keydown", (e) => {
                     document.getElementById("points").innerHTML =
                     parseInt(document.getElementById("points").innerHTML) + 1;
                     final_score += 1;
+                    bullet.parentElement.removeChild(bullet);
                 }
             }
         }
-
-        bullet.style.bottom = bulletbottom + 3 + "px";
+        var temp_highest_length_for_gamer = highest_length_for_gamer - left;
+        console.log(temp_highest_length_for_gamer);
+        if (crossed_length < temp_highest_length_for_gamer){
+            bullet.style.bottom = bulletbottom + 3 + "px";
+            elapsed_time += 1;
+            crossed_length += 3;
+        }
+        else{
+            bullet.parentElement.removeChild(bullet);
+            
+        }
+        
         
 
-    })
+    }, 1)
   }
 
-}, 1);
+});
 
 
 window.addEventListener('scroll', ()=>{
-    console.log('scrolled');
+    // console.log('scrolled');
 })
 
 var generatecoins = setInterval(function(){
@@ -189,7 +207,11 @@ var check_coin_touch = setInterval(function(){
                 document.getElementById("coin_count").innerHTML =
                 parseInt(document.getElementById("coin_count").innerHTML) + 1;
                 coin.parentElement.removeChild(coin);
-                console.log(jet_rect.top, jet_rect.bottom);
+                total_coins += 1;
+                light_velocity = light_velocity * 0.99;
+                highest_length_for_gamer = highest_length_for_gamer / ((1 - (.5**2 / light_velocity ** 2)) ** .5)
+                // console.log(jet_rect.top, jet_rect.bottom);
+                console.log(total_coins);
             }
 
         }
@@ -251,7 +273,7 @@ let myAudio = document.querySelector('#audio')
 myAudio.play()
 score = document.getElementById('points').innerHTML;
  document.getElementById('end').onclick = function(){
-    console.log(gamer_name);
+    // console.log(gamer_name);
     alert(`${gamer_name}'s score: ${final_score}`)
     window.location.reload();
 
